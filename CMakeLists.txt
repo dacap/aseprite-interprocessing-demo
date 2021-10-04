@@ -3,6 +3,7 @@ cmake_minimum_required (VERSION 3.10)
 project(livelink CXX C)
 set(CMAKE_CXX_STANDARD 11)
 
+set(IXWEBSOCKET_INSTALL OFF CACHE BOOL "Install IXWebSocket")
 add_subdirectory(IXWebSocket)
 target_include_directories(ixwebsocket PUBLIC)
 

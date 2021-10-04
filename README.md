@@ -4,6 +4,8 @@ An example of using the proposed websocket api for aseprite. The server displays
 
 ![xNNIG155lM](https://user-images.githubusercontent.com/49268426/135765267-6e77fefe-7fa0-45eb-8a9b-9525d6713caf.gif)
 
+[Windows exe for the server](https://github.com/lampysprites/aseprite-interprocessing-demo/releases)
+
 I haven't tested linux or macox builds, the linking options might be wrong (see github.com/erkkah/tigr)
 
 ## Usage

@@ -34,9 +34,23 @@ local function finish()
 end
 
 
+local function sendImage()
+    if buf.width ~= spr.width or buf.height ~= spr.height then
+        buf:resize(spr.width, spr.height)
+    end
+
+    buf:clear()
+    buf:drawSprite(spr, app.activeFrame.frameNumber)
+
+    ws:sendBinary(string.pack("<LLL", IMAGE_ID, buf.width, buf.height), buf.bytes)
+end
+
+
 -- close connection and ui if the sprite is closed
+local frame = -1
 local function onSiteChange()
-    if app.site.sprite ~= spr then
+    if app.activeSprite ~= spr then
+        -- quit if the sprite was closed
         for _,s in ipairs(app.sprites) do
             if s == spr then 
                 -- the sprite is open in an inactive tab
@@ -45,19 +59,13 @@ local function onSiteChange()
         end
 
         finish()
+    else
+        -- update the view after the frame changes
+        if app.activeFrame.frameNumber ~= frame then
+            frame = app.activeFrame.frameNumber
+            sendImage()
+        end
     end
-end
-
-
-local function sendImage()
-    if buf.width ~= spr.width or buf.height ~= spr.height then
-        buf:resize(spr.width, spr.height)
-    end
-
-    buf:clear()
-    buf:drawSprite(spr, 1)
-
-    ws:sendBinary(string.pack("<LLL", IMAGE_ID, buf.width, buf.height), buf.bytes)
 end
 
 

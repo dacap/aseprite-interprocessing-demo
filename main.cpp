@@ -62,6 +62,8 @@ int main()
   {
     if (update) {
       tigrResize(bmp, w, h);
+      screen->w = bmp->w;
+      screen->h = bmp->h;
       memcpy(bmp->pix, pixels, w * h * sizeof(TPixel));
 
       update = false;

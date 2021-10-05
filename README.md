@@ -6,7 +6,13 @@ An example of using the proposed websocket api for aseprite. The server displays
 
 [Windows exe for the server](https://github.com/lampysprites/aseprite-interprocessing-demo/releases)
 
-I haven't tested linux or macox builds, the linking options might be wrong (see github.com/erkkah/tigr)
+## Dependencies
+
+Needed by [Tigr](https://github.com/erkkah/tigr):
+
+- opengl32 and gdi32 on Windows
+- OpenGL and Cocoa on macOS
+- libGLU, libGL and libX11 on Linux
 
 ## Usage
  - build aseprite **from the PR**

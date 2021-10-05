@@ -14,12 +14,12 @@ if(WIN32)
     target_link_libraries(livelink opengl32 gdi32)
 endif()
 
-if(UNIX)
-    ## untested ##
+if(UNIX AND NOT APPLE)
     target_link_libraries(livelink GLU GL X11)
 endif()
 
 if(APPLE)
-    ## untested ##
-    target_link_libraries(livelink OpenGL Cocoa)
+    find_library(COCOA_LIBRARY Cocoa)
+    find_library(OPENGL_LIBRARY OpenGL NAMES GL)
+    target_link_libraries(livelink ${COCOA_LIBRARY} ${OPENGL_LIBRARY})
 endif()

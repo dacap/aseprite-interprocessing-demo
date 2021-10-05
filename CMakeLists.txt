@@ -1,8 +1,9 @@
 cmake_minimum_required (VERSION 3.10)
 
-project(livelink CXX)
+project(livelink CXX C)
 set(CMAKE_CXX_STANDARD 11)
 
+set(IXWEBSOCKET_INSTALL OFF CACHE BOOL "Install IXWebSocket")
 add_subdirectory(IXWebSocket)
 target_include_directories(ixwebsocket PUBLIC)
 
@@ -13,12 +14,12 @@ if(WIN32)
     target_link_libraries(livelink opengl32 gdi32)
 endif()
 
-if(UNIX)
-    ## untested ##
+if(UNIX AND NOT APPLE)
     target_link_libraries(livelink GLU GL X11)
 endif()
 
 if(APPLE)
-    ## untested ##
-    target_link_libraries(livelink OpenGL Cocoa)
+    find_library(COCOA_LIBRARY Cocoa)
+    find_library(OPENGL_LIBRARY OpenGL NAMES GL)
+    target_link_libraries(livelink ${COCOA_LIBRARY} ${OPENGL_LIBRARY})
 endif()

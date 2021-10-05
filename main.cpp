@@ -6,6 +6,8 @@
 #include "ixwebsocket/IXWebSocketServer.h"
 #include "ixwebsocket/IXWebSocketMessageType.h"
 
+#include <cstring>
+
 TPixel* pixels;
 unsigned long w, h;
 bool update = false;

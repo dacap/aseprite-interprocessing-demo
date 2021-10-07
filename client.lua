@@ -23,18 +23,24 @@ local buf = Image(spr.width, spr.height, ColorMode.RGB)
 local IMAGE_ID = string.byte("I")
 
 
+-- callbacks, defined as variable because onSiteChange() calls
+-- finish(), and finish() uses onSiteChange
+local sendImage
+local onSiteChange
+
+
 -- clean up and exit
 local function finish()
     if ws ~= nil then ws:close() end
     if dlg ~= nil then dlg:close() end
-    spr.onChange = nil
-    app.site.onChange = nil
+    spr.events:off(sendImage)
+    app.events:off(onSiteChange)
     spr = nil
     dlg = nil
 end
 
 
-local function sendImage()
+sendImage = function()
     if buf.width ~= spr.width or buf.height ~= spr.height then
         buf:resize(spr.width, spr.height)
     end
@@ -48,7 +54,7 @@ end
 
 -- close connection and ui if the sprite is closed
 local frame = -1
-local function onSiteChange()
+onSiteChange = function()
     if app.activeSprite ~= spr then
         -- quit if the sprite was closed
         for _,s in ipairs(app.sprites) do
@@ -71,16 +77,16 @@ end
 
 -- t is for type, there's already a lua function
 local function receive(t, message)
-    if t == MessageType.Open then
+    if t == WebSocketMessageType.Open then
         dlg:modify{id="status", text="Sync ON"}
-        spr.onChange = sendImage
-        app.site.onChange = onSiteChange
+        spr.events:on('change', sendImage)
+        app.events:on('sitechange', onSiteChange)
         sendImage()
 
-    elseif t == MessageType.Close and dlg ~= nil then
+    elseif t == WebSocketMessageType.Close and dlg ~= nil then
         dlg:modify{id="status", text="No connection"}
-        spr.onChange = nil
-        app.site.onChange = nil
+        spr.events:off(sendImage)
+        app.events:off(onSiteChange)
     end
 end
 

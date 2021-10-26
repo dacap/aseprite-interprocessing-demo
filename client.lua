@@ -77,13 +77,13 @@ end
 
 -- t is for type, there's already a lua function
 local function receive(t, message)
-    if t == WebSocketMessageType.Open then
+    if t == WebSocketMessageType.OPEN then
         dlg:modify{id="status", text="Sync ON"}
         spr.events:on('change', sendImage)
         app.events:on('sitechange', onSiteChange)
         sendImage()
 
-    elseif t == WebSocketMessageType.Close and dlg ~= nil then
+    elseif t == WebSocketMessageType.CLOSE and dlg ~= nil then
         dlg:modify{id="status", text="No connection"}
         spr.events:off(sendImage)
         app.events:off(onSiteChange)
